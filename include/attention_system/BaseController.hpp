@@ -25,6 +25,7 @@
 #include "attention_system/PID.hpp"
 
 // #include <geometry_msgs/msg/transform_stamped.hpp>
+#include "std_msgs/msg/string.hpp"
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
@@ -44,6 +45,8 @@ public:
   void control_cycle();
 
 private:
+  void
+    target_callback(const std_msgs::msg::String::SharedPtr msg);
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
     on_activate(const rclcpp_lifecycle::State & previous_state);
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
@@ -60,7 +63,10 @@ private:
   tf2::BufferCore tf_buffer_;
   tf2_ros::TransformListener tf_listener_;
 
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr target_sub_;
+
   rclcpp_lifecycle::LifecyclePublisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
+
 };
 
 }  // namespace attention_system

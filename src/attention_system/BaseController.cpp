@@ -23,16 +23,15 @@ using std::placeholders::_1;
 BaseController::BaseController()
 : CascadeLifecycleNode("attention_system_base"),
   pid_params_{0.0, 1.0, 0.0, 0.3},
+  frame_id_(""),
   tf_buffer_(),
   tf_listener_(tf_buffer_)
 {
-  declare_parameter("frame_id", frame_id_);
   declare_parameter("pid_min_ref", pid_params_[0]);
   declare_parameter("pid_max_ref", pid_params_[1]);
   declare_parameter("pid_min_output", pid_params_[2]);
   declare_parameter("pid_max_output", pid_params_[3]);
 
-  get_parameter("frame_id", frame_id_);
   get_parameter("pid_min_ref", pid_params_[0]);
   get_parameter("pid_max_ref", pid_params_[1]);
   get_parameter("pid_min_output", pid_params_[2]);
@@ -40,8 +39,17 @@ BaseController::BaseController()
 
   vel_pub_ = create_publisher<geometry_msgs::msg::Twist>("/out_vel", 10);
 
+  target_sub_ = create_subscription<std_msgs::msg::String>(
+    "attention_system", 10, std::bind(&BaseController::target_callback, this, _1));
+
   pid_.set_pid(pid_params_[0], pid_params_[1], pid_params_[2], pid_params_[3]);
 
+}
+
+void
+BaseController::target_callback(const std_msgs::msg::String::SharedPtr msg)
+{
+  frame_id_ = msg->data;
 }
 
 void
@@ -49,7 +57,10 @@ BaseController::control_cycle()
 {
   RCLCPP_DEBUG(get_logger(), "Control cycle");
 
-
+  if (frame_id_ == "") {
+    RCLCPP_DEBUG(get_logger(), "No target frame_id received");
+    return;
+  }
   geometry_msgs::msg::TransformStamped base2target_msg;
   tf2::Stamped<tf2::Transform> base2target;
   
