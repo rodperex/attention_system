@@ -22,8 +22,8 @@ int main(int argc, char * argv[])
 
 
   auto attention_node = std::make_shared<attention_system::BaseController>();
-//   attention_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
-//   attention_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+  attention_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
+  attention_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
 
 
   exec.add_node(attention_node->get_node_base_interface());

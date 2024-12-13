@@ -89,7 +89,7 @@ rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
 BaseController::on_activate(const rclcpp_lifecycle::State & previous_state)
 {
   (void)previous_state;
-  RCLCPP_INFO(get_logger(), "BaseController on_activate");
+  RCLCPP_INFO(get_logger(), "Attention system activated");
 
   vel_pub_->on_activate();
 
@@ -103,7 +103,7 @@ rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
 BaseController::on_deactivate(const rclcpp_lifecycle::State & previous_state)
 {
   (void)previous_state;
-  RCLCPP_INFO(get_logger(), "BaseController on_deactivate");
+  RCLCPP_INFO(get_logger(), "Attention system deactivated");
 
   timer_ = nullptr;
   vel_pub_->on_deactivate();
