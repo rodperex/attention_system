@@ -1,8 +1,12 @@
 attention_system_base:
   ros__parameters:
     use_sim_time: true
+    max_time_no_tf: 1.0
     pid_min_ref: 5.0
     pid_max_ref: 90.0
     pid_min_output: 0.0
     pid_max_output: 0.2
+    pid_kp: 1.0
+    pid_ki: 0.0
+    pid_kd: 0.0
     

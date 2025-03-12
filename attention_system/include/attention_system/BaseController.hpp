@@ -31,6 +31,9 @@
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 #include "tf2/transform_datatypes.h"
 
+#include "attention_msgs/srv/activate_attention.hpp"
+#include "std_srvs/srv/trigger.hpp"
+
 class PID;
 namespace attention_system
 {
@@ -51,6 +54,12 @@ private:
     on_activate(const rclcpp_lifecycle::State & previous_state);
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
     on_deactivate(const rclcpp_lifecycle::State & previous_state);
+  void
+  handle_activation_service(const std::shared_ptr<attention_msgs::srv::ActivateAttention::Request> request, 
+      std::shared_ptr<attention_msgs::srv::ActivateAttention::Response> response);
+  void
+  handle_deactivation_service(const std::shared_ptr<std_srvs::srv::Trigger::Request> request, 
+      std::shared_ptr<std_srvs::srv::Trigger::Response> response);
   
   rclcpp::TimerBase::SharedPtr timer_;
 
@@ -66,6 +75,12 @@ private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr target_sub_;
 
   rclcpp_lifecycle::LifecyclePublisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
+
+  rclcpp::Service<attention_msgs::srv::ActivateAttention>::SharedPtr activate_srv_;
+  rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr deactivate_srv_;
+
+  double max_time_no_tf_;
+  rclcpp::Time last_tf_time_;
 
 };
 

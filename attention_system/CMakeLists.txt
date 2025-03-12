@@ -11,6 +11,8 @@ find_package(ament_index_cpp REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(attention_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 find_package(rclcpp_cascade_lifecycle REQUIRED)
 
 find_package(rclcpp REQUIRED)
@@ -22,6 +24,8 @@ set(dependencies
   tf2_geometry_msgs
   tf2
   tf2_ros
+  attention_msgs
+  std_srvs  
   rclcpp
   rclcpp_cascade_lifecycle
 )
