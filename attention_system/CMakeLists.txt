@@ -34,6 +34,7 @@ include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED
   src/attention_system/BaseController.cpp
+  src/attention_system/Tester.cpp
   src/attention_system/PID.cpp
 )
 ament_target_dependencies(${PROJECT_NAME} ${dependencies})
@@ -42,9 +43,14 @@ add_executable(attention_system_base src/base_main.cpp)
 ament_target_dependencies(attention_system_base ${dependencies})
 target_link_libraries(attention_system_base ${PROJECT_NAME})
 
+add_executable(test_attention src/test_attention.cpp)
+ament_target_dependencies(test_attention ${dependencies})
+target_link_libraries(test_attention ${PROJECT_NAME})
+
 install(TARGETS
   ${PROJECT_NAME}
   attention_system_base
+  test_attention
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}

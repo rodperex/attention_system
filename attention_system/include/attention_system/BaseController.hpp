@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef C__BC__ATTENTION_SYSTEM__HPP_
-#define C__BC__ATTENTION_SYSTEM__HPP_
+#ifndef ATTENTION_SYSTEM__HPP_
+#define ATTENTION_SYSTEM__HPP_
 
 #include <memory>
 #include <algorithm>

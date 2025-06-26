@@ -38,7 +38,6 @@ BaseController::BaseController()
   declare_parameter("pid_ki", 0.06);
   declare_parameter("pid_kd", 0.53);
 
-
   get_parameter("pid_min_ref", pid_params_[0]);
   get_parameter("pid_max_ref", pid_params_[1]);
   get_parameter("pid_min_output", pid_params_[2]);
@@ -47,9 +46,6 @@ BaseController::BaseController()
   get_parameter("pid_ki", ki);
   get_parameter("pid_kd", kd);
   get_parameter("max_time_no_tf", max_time_no_tf_);
-
-  
-
 
   vel_pub_ = create_publisher<geometry_msgs::msg::Twist>("/out_vel", 10);
 
@@ -83,14 +79,13 @@ BaseController::control_cycle()
   }
   geometry_msgs::msg::TransformStamped base2target_msg;
   tf2::Stamped<tf2::Transform> base2target;
-  
   try {
     base2target_msg = tf_buffer_.lookupTransform("base_footprint", frame_id_, tf2::TimePointZero);
-    last_tf_time_ = now();
+    last_tf_time_ = get_clock()->now();
   } catch (tf2::TransformException & ex) {
     RCLCPP_ERROR(get_logger(), "Could not transform %s to base_footprint: %s", frame_id_.c_str(), ex.what());
 
-    if ((now() - last_tf_time_).seconds() > max_time_no_tf_) {
+    if ((get_clock()->now() - last_tf_time_).seconds() > max_time_no_tf_) {
       RCLCPP_ERROR_ONCE(get_logger(), "No TF for more than %.2f seconds. Deactivating attention system", max_time_no_tf_);
       frame_id_ = "";
     }
